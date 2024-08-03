@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setClickedFileAction, setOpenFilesAction } from '../app/features/fileTreeSlice'
+import { setClickedFileAction, setFileIdToRemoveAction, setOpenFilesAction } from '../app/features/fileTreeSlice'
 import { IFile } from '../interfaces'
 import RenderFileIcon from './RenderFileIcon'
 import CloseIcon from './SVG/CloseIcon'
@@ -36,7 +36,12 @@ const OpenedFilesBarTab = ({file}:IProps) => {
   return (
     <div className='flex items-center p-2' onClick={onClick} style={{
         borderTop: file.id===clickedFile.activeTabID ? "2px solid #cf6ccf":"2px solid transparent"
-    }}>
+    }}
+    onContextMenu={e=>{
+        e.preventDefault();
+        dispatch(setFileIdToRemoveAction(file.id))
+    }}
+>
         <RenderFileIcon filename={file.name}/>
         <span className='cursor-pointer duration-300 flex justify-center items-center w-fit mr-2 p-1 rounded-md'>
             {file.name}
@@ -47,6 +52,7 @@ const OpenedFilesBarTab = ({file}:IProps) => {
         }}>
             <CloseIcon />
         </span>
+
     </div>
 
   )
